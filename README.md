@@ -1,12 +1,64 @@
-# React + Vite
+# Currency Converter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React app built with Vite that converts one currency into two other currencies at the same time.
 
-Currently, two official plugins are available:
+## What this project does
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Lets the user enter an amount and choose a currency to convert from.
+- Converts that amount into two selected target currencies.
+- Uses a free currency API to load exchange rates and currency names.
+- Renders a clean UI with input boxes and dropdown selectors.
 
-## Expanding the ESLint configuration
+## Key React concepts used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `useState`: Stores values that change over time, such as the amount, selected currencies, and conversion results.
+- `useEffect`: Loads currency data from the API when the selected base currency changes.
+- `useCallback`: Wraps the convert function to avoid recreating it on every render unless its inputs change.
+- `useId`: Creates a stable HTML id for form inputs inside the `InputBox` component.
+- Custom hook `useCurrencyInfo`: Fetches currency rates and currency labels, and keeps the data organized for the app.
+
+## Main files
+
+- `src/App.jsx`
+  - The main app component.
+  - Holds state for amount, source currency, two destination currencies, and converted output.
+  - Uses `useCurrencyInfo` to fetch exchange rates.
+  - Handles the form submit and swap button.
+
+- `src/components/InputBox.jsx`
+  - A reusable input field component.
+  - Displays an amount input and a currency dropdown.
+  - Supports disabling the amount input for result fields.
+
+- `src/hooks/useCurrencyInfo.js`
+  - Custom hook that fetches exchange rates from an API.
+  - Returns a rate map and a label map for available currencies.
+
+## How conversion works
+
+1. The app loads currency data for the selected "from" currency.
+2. The user enters an amount and chooses target currencies.
+3. On submit, `convert()` multiplies the amount by each target currency rate.
+4. Results are shown in the two output `InputBox` components.
+
+## Run locally
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Start development server:
+
+```bash
+npm run dev
+```
+
+3. Open the shown local address in your browser.
+
+## Notes
+
+- The app uses Tailwind CSS for styling.
+- The currency API is loaded from `cdn.jsdelivr.net`.
+- The swap button switches the source and target currencies quickly.

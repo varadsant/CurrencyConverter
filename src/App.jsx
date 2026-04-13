@@ -7,16 +7,20 @@ function App() {
   const [amount, setAmount] = useState(0);
   const [from, setFrom] = useState("eur");
   const [to, setTo] = useState("inr");
+  const [secondTo, setSecondTo] = useState("usd");
+  const [secondConvertedAmt, setSecondConvertedAmt] = useState(0);
   const [convertedAmt, setConvertedAmt] = useState(0);
 
   const [currencyInfo, currencyLabel] = useCurrencyInfo(from);
   const options = Object.keys(currencyInfo);
 
-  // console.log(options);
+  // console.log(currencyInfo);
+  console.log(amount);
 
   const convert = useCallback(() => {
     setConvertedAmt(amount * currencyInfo[to]);
-  }, [amount, currencyInfo, to]);
+    setSecondConvertedAmt(amount * currencyInfo[secondTo]);
+  }, [amount, currencyInfo, to, secondTo]);
 
   const swap = () => {
     setFrom(to);
@@ -75,11 +79,25 @@ function App() {
                 amountDisable
               />
             </div>
+
+            <div className="w-full mt-1 mb-4">
+              <InputBox
+                label={`Conversion from ${from.toUpperCase()}`}
+                amount={secondConvertedAmt}
+                currencyOptions={options}
+                currencyLabels={currencyLabel}
+                onCurrencyChange={(currency) => setSecondTo(currency)}
+                selectCurrency={secondTo}
+                amountDisable
+              />
+            </div>
+
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg"
+              className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg cursor-pointer"
             >
-              Convert {from.toUpperCase()} to {to.toUpperCase()}
+              Convert {from.toUpperCase()} to ({to.toUpperCase()} and{" "}
+              {secondTo.toUpperCase()})
             </button>
           </form>
         </div>
