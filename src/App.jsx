@@ -14,7 +14,8 @@ function App() {
   const [currencyInfo, currencyLabel] = useCurrencyInfo(from);
   const options = Object.keys(currencyInfo);
 
-  // console.log(options);
+  // console.log(currencyInfo);
+  console.log(amount);
 
   const convert = useCallback(() => {
     setConvertedAmt(amount * currencyInfo[to]);
